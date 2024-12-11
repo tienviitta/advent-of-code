@@ -2,5 +2,6 @@
     "editor.formatOnSave": true,
     "editor.fontFamily": "Hack Nerd Font, Menlo, Monaco, 'Courier New', monospace",
     "editor.fontSize": 13,
-    "editor.fontLigatures": false
+    "editor.fontLigatures": false,
+    "editor.defaultFormatter": "rust-lang.rust-analyzer"
 }
