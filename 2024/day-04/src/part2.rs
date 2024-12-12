@@ -11,32 +11,44 @@
     MXMXAXMASX
 */
 
-// All possible directions from the X
-// XMAS
-const XMAS: [char; 4] = ['X', 'M', 'A', 'S'];
-const DIRS: [(i64, i64); 8] = [
-    (-1, -1),
-    (-1, 0),
-    (-1, 1),
-    (0, -1),
-    (0, 1),
-    (1, -1),
-    (1, 0),
-    (1, 1),
-];
-
-fn has_xmas(grid: &Vec<Vec<char>>, mut row: i64, mut col: i64, dir: &(i64, i64)) -> bool {
-    for x in &XMAS {
-        if row < 0 || col < 0 || row >= grid.len() as i64 || col >= grid[0].len() as i64 {
-            return false;
-        }
-        if grid[row as usize][col as usize] != *x {
-            return false;
-        }
-        row += dir.0;
-        col += dir.1;
+fn has_xmas(grid: &Vec<Vec<char>>, row: i64, col: i64) -> i64 {
+    let mut res = 0;
+    if (row - 1) < 0
+        || (col - 1) < 0
+        || (row + 1) >= grid.len() as i64
+        || (col + 1) >= grid[0].len() as i64
+    {
+        return 0;
     }
-    true
+    if (grid[(row - 1) as usize][(col - 1) as usize] == 'M'
+        && grid[(row + 1) as usize][(col + 1) as usize] == 'S')
+        && (grid[(row - 1) as usize][(col + 1) as usize] == 'M'
+            && grid[(row + 1) as usize][(col - 1) as usize] == 'S')
+    {
+        res += 1;
+    }
+    if (grid[(row - 1) as usize][(col - 1) as usize] == 'M'
+        && grid[(row + 1) as usize][(col + 1) as usize] == 'S')
+        && (grid[(row - 1) as usize][(col + 1) as usize] == 'S'
+            && grid[(row + 1) as usize][(col - 1) as usize] == 'M')
+    {
+        res += 1;
+    }
+    if (grid[(row - 1) as usize][(col - 1) as usize] == 'S'
+        && grid[(row + 1) as usize][(col + 1) as usize] == 'M')
+        && (grid[(row - 1) as usize][(col + 1) as usize] == 'S'
+            && grid[(row + 1) as usize][(col - 1) as usize] == 'M')
+    {
+        res += 1;
+    }
+    if (grid[(row - 1) as usize][(col - 1) as usize] == 'S'
+        && grid[(row + 1) as usize][(col + 1) as usize] == 'M')
+        && (grid[(row - 1) as usize][(col + 1) as usize] == 'M'
+            && grid[(row + 1) as usize][(col - 1) as usize] == 'S')
+    {
+        res += 1;
+    }
+    return res;
 }
 
 pub fn part2(input: &String) -> i64 {
@@ -50,9 +62,10 @@ pub fn part2(input: &String) -> i64 {
         for col in 0..n_cols {
             let row = row as i64;
             let col = col as i64;
-            for dir in &DIRS {
-                total += has_xmas(&grid, row, col, dir) as i64;
+            if grid[row as usize][col as usize] != 'A' {
+                continue;
             }
+            total += has_xmas(&grid, row, col);
         }
     }
     return total;

@@ -26,11 +26,11 @@ const DIRS: [(i64, i64); 8] = [
 ];
 
 fn has_xmas(grid: &Vec<Vec<char>>, mut row: i64, mut col: i64, dir: &(i64, i64)) -> bool {
-    for x in &XMAS {
+    for xmas in &XMAS {
         if row < 0 || col < 0 || row >= grid.len() as i64 || col >= grid[0].len() as i64 {
             return false;
         }
-        if grid[row as usize][col as usize] != *x {
+        if grid[row as usize][col as usize] != *xmas {
             return false;
         }
         row += dir.0;
