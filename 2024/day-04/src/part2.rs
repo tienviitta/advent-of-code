@@ -10,45 +10,26 @@
     MAMMMXMMMM
     MXMXAXMASX
 */
+const CHECKS: [[char; 4]; 4] = [
+    ['M', 'M', 'S', 'S'],
+    ['M', 'S', 'S', 'M'],
+    ['S', 'S', 'M', 'M'],
+    ['S', 'M', 'M', 'S'],
+];
 
 fn has_xmas(grid: &Vec<Vec<char>>, row: i64, col: i64) -> i64 {
-    let mut res = 0;
-    if (row - 1) < 0
-        || (col - 1) < 0
-        || (row + 1) >= grid.len() as i64
-        || (col + 1) >= grid[0].len() as i64
-    {
-        return 0;
+    let xmas: [char; 4] = [
+        grid[(row - 1) as usize][(col - 1) as usize],
+        grid[(row - 1) as usize][(col + 1) as usize],
+        grid[(row + 1) as usize][(col + 1) as usize],
+        grid[(row + 1) as usize][(col - 1) as usize],
+    ];
+    for check in CHECKS {
+        if check.iter().zip(&xmas).all(|(c, x)| c == x) {
+            return 1;
+        }
     }
-    if (grid[(row - 1) as usize][(col - 1) as usize] == 'M'
-        && grid[(row + 1) as usize][(col + 1) as usize] == 'S')
-        && (grid[(row - 1) as usize][(col + 1) as usize] == 'M'
-            && grid[(row + 1) as usize][(col - 1) as usize] == 'S')
-    {
-        res += 1;
-    }
-    if (grid[(row - 1) as usize][(col - 1) as usize] == 'M'
-        && grid[(row + 1) as usize][(col + 1) as usize] == 'S')
-        && (grid[(row - 1) as usize][(col + 1) as usize] == 'S'
-            && grid[(row + 1) as usize][(col - 1) as usize] == 'M')
-    {
-        res += 1;
-    }
-    if (grid[(row - 1) as usize][(col - 1) as usize] == 'S'
-        && grid[(row + 1) as usize][(col + 1) as usize] == 'M')
-        && (grid[(row - 1) as usize][(col + 1) as usize] == 'S'
-            && grid[(row + 1) as usize][(col - 1) as usize] == 'M')
-    {
-        res += 1;
-    }
-    if (grid[(row - 1) as usize][(col - 1) as usize] == 'S'
-        && grid[(row + 1) as usize][(col + 1) as usize] == 'M')
-        && (grid[(row - 1) as usize][(col + 1) as usize] == 'M'
-            && grid[(row + 1) as usize][(col - 1) as usize] == 'S')
-    {
-        res += 1;
-    }
-    return res;
+    return 0;
 }
 
 pub fn part2(input: &String) -> i64 {
@@ -58,8 +39,8 @@ pub fn part2(input: &String) -> i64 {
     let n_cols = grid[0].len();
     // dbg!(n_rows, n_cols);
     let mut total: i64 = 0;
-    for row in 0..n_rows {
-        for col in 0..n_cols {
+    for row in 1..n_rows - 1 {
+        for col in 1..n_cols - 1 {
             let row = row as i64;
             let col = col as i64;
             if grid[row as usize][col as usize] != 'A' {
