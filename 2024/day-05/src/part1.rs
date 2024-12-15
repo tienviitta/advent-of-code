@@ -1,59 +1,94 @@
-/*
-    MMMSXXMASM
-    MSAMXMSMSA
-    AMXSXMAAMM
-    MSAMASMSMX
-    XMASAMXAMM
-    XXAMMXXAMA
-    SMSMSASXSS
-    SAXAMASAAA
-    MAMMMXMMMM
-    MXMXAXMASX
-*/
+use itertools::Itertools;
 
-// All possible directions from the X
-// XMAS
-const XMAS: [char; 4] = ['X', 'M', 'A', 'S'];
-const DIRS: [(i64, i64); 8] = [
-    (-1, -1),
-    (-1, 0),
-    (-1, 1),
-    (0, -1),
-    (0, 1),
-    (1, -1),
-    (1, 0),
-    (1, 1),
-];
+pub fn part1(input: &String) -> usize {
+    let lines: Vec<&str> = input.lines().collect();
+    // println!("{:?}", lines);
+    let split: Vec<_> = lines.split(|line| line.is_empty()).collect();
+    // println!("{:?}", split);
 
-fn has_xmas(grid: &Vec<Vec<char>>, mut row: i64, mut col: i64, dir: &(i64, i64)) -> bool {
-    for xmas in &XMAS {
-        if row < 0 || col < 0 || row >= grid.len() as i64 || col >= grid[0].len() as i64 {
-            return false;
-        }
-        if grid[row as usize][col as usize] != *xmas {
-            return false;
-        }
-        row += dir.0;
-        col += dir.1;
-    }
-    true
+    let rules: Vec<_> = split[0]
+        .iter()
+        .map(|line| {
+            let mut split = line.split('|');
+            (
+                split.next().unwrap().parse::<usize>().unwrap(),
+                split.next().unwrap().parse::<usize>().unwrap(),
+            )
+        })
+        .collect();
+    println!("rules:{:?}", rules);
+
+    let updates: Vec<Vec<_>> = split[1]
+        .iter()
+        .map(|line| {
+            line.split(',')
+                .map(|s| s.parse::<usize>().unwrap())
+                .collect()
+        })
+        .collect();
+    println!("updates:{:?}", updates);
+
+    /*
+    test.txt:
+        rules:[(47, 53), (97, 13), (97, 61), (97, 47), (75, 29), (61, 13), (75, 53), (29, 13), (97, 29), (53, 29), (61, 53), (97, 53), (61, 29), (47, 13), (75, 47), (97, 75), (47, 61), (75, 61), (47, 29), (75, 13), (53, 13)]
+        updates:[[75, 47, 61, 53, 29], [97, 61, 53, 29, 13], [75, 29, 13], [75, 97, 47, 61, 53], [61, 13, 29], [97, 13, 75, 29, 47]]
+    sum: 143
+     */
+    // for update in updates {
+    //     let tmp: Vec<_> = update
+    //         .iter()
+    //         .combinations(2)
+    //         .map(|v| (v[0], v[1]))
+    //         .collect();
+    //     println!("  tmp:{:?}", tmp);
+    // }
+    // let sum = 0;
+
+    let sum: usize = updates
+        .iter()
+        .filter(|update| {
+            !update
+                .iter()
+                .combinations(2)
+                .map(|v| (v[0], v[1]))
+                .any(|(&x, &y)| rules.iter().any(|r| r.1 == x && r.0 == y))
+        })
+        .map(|update| update[update.len() / 2])
+        .sum();
+    println!("sum: {}", sum);
+
+    return sum;
 }
 
-pub fn part1(input: &String) -> i64 {
-    // Make grid out of the lines
-    let grid: Vec<Vec<char>> = input.lines().map(|l| l.chars().collect()).collect();
-    let n_rows = grid.len();
-    let n_cols = grid[0].len();
-    // dbg!(n_rows, n_cols);
-    let mut total: i64 = 0;
-    for row in 0..n_rows {
-        for col in 0..n_cols {
-            let row = row as i64;
-            let col = col as i64;
-            for dir in &DIRS {
-                total += has_xmas(&grid, row, col, dir) as i64;
-            }
-        }
-    }
-    return total;
-}
+// pub fn part1(input: &String) -> i64 {
+//     let mut rules: Vec<Vec<i32>> = vec![];
+//     let mut updates: Vec<Vec<i32>> = vec![];
+//     for line in input.lines() {
+//         if line.is_empty() {
+//             break;
+//         }
+//         let mut rule = vec![];
+//         let items: Vec<&str> = line.split('|').collect();
+//         // print!("{:#?}", items);
+//         // rule.push(items.next().unwrap().parse::<i32>().unwrap());
+//         for item in items {
+//             rule.push(item.parse::<i32>().unwrap());
+//         }
+//         // println!("{:#?}", rule);
+//         rules.push(rule);
+//     }
+//     println!("{:#?}", rules);
+//     for line in input.lines() {
+//         let mut update = vec![];
+//         let items: Vec<&str> = line.split(',').collect();
+//         // print!("{:#?}", items);
+//         // rule.push(items.next().unwrap().parse::<i32>().unwrap());
+//         for item in items {
+//             update.push(item.parse::<i32>().unwrap());
+//         }
+//         // println!("{:#?}", rule);
+//         updates.push(update);
+//     }
+//     println!("{:#?}", updates);
+//     return 0;
+// }

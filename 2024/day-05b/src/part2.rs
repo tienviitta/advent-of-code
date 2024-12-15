@@ -1,6 +1,9 @@
+use std::collections::HashMap;
+
 use itertools::Itertools;
 
 pub fn part2(input: &String) -> usize {
+    println!("\nPart2:");
     let lines: Vec<&str> = input.lines().collect();
     // println!("{:?}", lines);
     let split: Vec<_> = lines.split(|line| line.is_empty()).collect();
@@ -16,7 +19,7 @@ pub fn part2(input: &String) -> usize {
             )
         })
         .collect();
-    println!("rules:{:?}", rules);
+    // println!("rules:{:?}", rules);
 
     let updates: Vec<Vec<_>> = split[1]
         .iter()
@@ -26,7 +29,7 @@ pub fn part2(input: &String) -> usize {
                 .collect()
         })
         .collect();
-    println!("updates:{:?}", updates);
+    // println!("updates:{:?}", updates);
 
     /*
     test.txt:
@@ -34,6 +37,13 @@ pub fn part2(input: &String) -> usize {
         updates:[[75, 47, 61, 53, 29], [97, 61, 53, 29, 13], [75, 29, 13], [75, 97, 47, 61, 53], [61, 13, 29], [97, 13, 75, 29, 47]]
     sum: 143
     */
+    let mut cache = HashMap::new();
+    for rule in &rules {
+        cache.insert((rule.0, rule.1), true);
+        cache.insert((rule.1, rule.0), false);
+    }
+    println!("cache:{:?}", cache);
+
     let sum: usize = updates
         .iter()
         .filter(|update| {
@@ -41,30 +51,10 @@ pub fn part2(input: &String) -> usize {
                 .iter()
                 .combinations(2)
                 .map(|v| (v[0], v[1]))
-                .any(|(&x, &y)| rules.iter().any(|r| r.1 == x && r.0 == y))
-        })
-        .map(|update| {
-            let mut update = update.clone();
-            while let Some((i0, i1)) = update
-                .iter()
-                .combinations(2)
-                .map(|v| (v[0], v[1]))
-                .find_map(|(&x, &y)| {
-                    rules.iter().find(|r| r.1 == x && r.0 == y).map(|r| {
-                        (
-                            update.iter().position(|&e| e == r.1).unwrap(),
-                            update.iter().position(|&e| e == r.0).unwrap(),
-                        )
-                    })
-                })
-            {
-                update.swap(i0, i1);
-            }
-            update
+                .all(|(&x, &y)| *cache.get(&(x, y)).unwrap())
         })
         .map(|update| update[update.len() / 2])
         .sum();
-    println!("sum: {}", sum);
 
     return sum;
 }
