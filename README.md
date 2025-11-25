@@ -15,6 +15,18 @@ This project automates input fetching and solution running for Advent of Code ch
    AOC_SESSION=your_session_cookie_here
    ```
 
+### How to Get Your Session Cookie
+
+1. Log in to [Advent of Code](https://adventofcode.com/)
+2. Open Chrome DevTools (F12 or Right-click → Inspect)
+3. Go to the **Application** tab
+4. In the left sidebar, expand **Cookies** and click on `https://adventofcode.com`
+5. Find the cookie named `session`
+6. Copy its **Value** (it's a long hexadecimal string)
+7. Paste this value in your `.env` file as `AOC_SESSION=your_session_cookie_here`
+
+Other browser should have similar cookie named `session` available. Happy coding!
+
 ## Usage
 
 ### Create a New Day Solution
@@ -36,6 +48,7 @@ year<year>/
   day<day>/
     part1.js
     part2.js
+    input.txt
     test.txt
 ```
 
@@ -71,7 +84,7 @@ npm run run 2015 3 1 test
 
 The optional `test` flag allows you to test your solution with the `test.txt` file before running it on the actual input.
 
-## How the Runner Works
+## Extra: How the Runner Works
 
 The runner script dynamically loads and executes your solution:
 
