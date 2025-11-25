@@ -1,0 +1,43 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Advent of Code (Example: 2025 Day 1 Part 1)",
+      "program": "${workspaceFolder}/utils/runner.js",
+      "args": ["2025", "1", "1"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run Advent of Code (Custom)",
+      "program": "${workspaceFolder}/utils/runner.js",
+      "args": ["${input:year}", "${input:day}", "${input:part}"],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal"
+    }
+  ],
+  "inputs": [
+    {
+      "id": "year",
+      "type": "promptString",
+      "description": "Enter the year (e.g., 2025)",
+      "default": "2025"
+    },
+    {
+      "id": "day",
+      "type": "promptString",
+      "description": "Enter the day (e.g., 1)",
+      "default": "1"
+    },
+    {
+      "id": "part",
+      "type": "promptString",
+      "description": "Enter the part (1 or 2)",
+      "default": "1"
+    }
+  ]
+}
