@@ -16,7 +16,7 @@ fs.mkdirSync(dir, { recursive: true });
 
 // Template for solution files
 const template = `export default function solve(input) {
-  const lines = input.trim().split('\\n');
+  const lines = input.trim().split(/\\r?\\n/);
   // TODO: Implement solution
   return 0;
 }
