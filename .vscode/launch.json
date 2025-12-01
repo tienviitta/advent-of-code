@@ -4,9 +4,9 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Run Advent of Code (Example: 2025 Day 1 Part 1)",
+      "name": "Run Advent of Code (Example: 2025 Day 1 Part 2)",
       "program": "${workspaceFolder}/utils/runner.js",
-      "args": ["2025", "1", "1"],
+      "args": ["2025", "1", "2", "test"],
       "cwd": "${workspaceFolder}",
       "console": "integratedTerminal"
     },
