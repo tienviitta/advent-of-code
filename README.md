@@ -84,6 +84,41 @@ npm run run 2015 3 1 test
 
 The optional `test` flag allows you to test your solution with the `test.txt` file before running it on the actual input.
 
+## Running Tests
+
+Unit tests are located in the `tests/` directory. To run all tests:
+
+```bash
+npm test
+```
+
+To run a specific test file:
+
+```bash
+node --test tests/gridUtils.test.js
+```
+
+To run tests with detailed output:
+
+```bash
+node --test --test-reporter=spec tests/*.test.js
+```
+
+### Test Structure
+
+Tests use Node.js's built-in test runner (available in Node.js 18+):
+
+```javascript
+import { describe, it } from "node:test";
+import assert from "node:assert";
+
+describe("feature", () => {
+  it("should do something", () => {
+    assert.strictEqual(actual, expected);
+  });
+});
+```
+
 ## Extra: How the Runner Works
 
 The runner script dynamically loads and executes your solution:
