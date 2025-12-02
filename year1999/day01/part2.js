@@ -1,5 +1,7 @@
+import { GridPathfinder } from "./GridPathfinder.js";
+
 export default function solve(input) {
   const lines = input.trim().split(/\r?\n/);
-  // TODO: Implement solution
-  return 0;
+  const pathfinder = new GridPathfinder(lines);
+  return pathfinder.findAllPaths();
 }
