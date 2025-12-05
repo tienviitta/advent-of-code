@@ -151,3 +151,68 @@ solution.default(input); // Now we can call the exported function
 ```
 
 This allows the runner to work in an ES module context and dynamically load solution files based on command-line arguments.
+
+## Performance Profiling and Benchmarking
+
+There are several ways to profile and benchmark JavaScript code:
+
+### 1. Built-in `console.time()` / `console.timeEnd()`
+
+Simple and built into Node.js:
+
+```javascript
+console.time("myFunction");
+myFunction();
+console.timeEnd("myFunction"); // Output: myFunction: 123.456ms
+```
+
+### 2. Performance API (More precise)
+
+```javascript
+import { performance } from "perf_hooks";
+
+const start = performance.now();
+myFunction();
+const end = performance.now();
+console.log(`Execution time: ${(end - start).toFixed(3)}ms`);
+```
+
+### 3. Benchmark.js (Industry standard for microbenchmarks)
+
+```bash
+npm install benchmark
+```
+
+```javascript
+import Benchmark from "benchmark";
+const suite = new Benchmark.Suite();
+
+suite
+  .add("Original approach", function () {
+    // original code
+  })
+  .add("Optimized approach", function () {
+    // optimized code
+  })
+  .on("cycle", function (event) {
+    console.log(String(event.target));
+  })
+  .on("complete", function () {
+    console.log("Fastest is " + this.filter("fastest").map("name"));
+  })
+  .run({ async: true });
+```
+
+### 4. Node.js built-in profiler
+
+```bash
+node --prof your-script.js
+node --prof-process isolate-*-v8.log > processed.txt
+```
+
+### 5. Chrome DevTools (for detailed profiling)
+
+```bash
+node --inspect-brk your-script.js
+# Then open chrome://inspect in Chrome
+```
